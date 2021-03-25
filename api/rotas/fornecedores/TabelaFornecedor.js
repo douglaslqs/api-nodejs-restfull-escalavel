@@ -1,7 +1,9 @@
 const Modelo = require('./ModeloTabelaFornecedor')
+const NaoEncontrado = require('./../../erros/NaoEncontrado')
+
 module.exports = {
     listar() {
-        return Modelo.findAll()
+        return Modelo.findAll({raw: true})
     },
     async listarPorId(id) {
         const fornecedor = await Modelo.findOne(
@@ -9,9 +11,8 @@ module.exports = {
                         id: id
                     }
             })
-        console.log(fornecedor)
         if (!fornecedor) {
-            throw new Error('Fornecedor não encontrado')
+            throw new NaoEncontrado()
         }
         return fornecedor
     },
